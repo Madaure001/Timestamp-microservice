@@ -21,15 +21,39 @@ app.get("/", function (req, res) {
 
 // your first API endpoint... 
 let responseObject = {}
-app.get("/api/timestamp/:input", function (req, res) {
+app.get("/api/:input", function (req, res) {
   
   let input = req.params.input
   //Using an ISO date format
   if (input.includes('-')){
-    responseObject['"unix"'] = new Date(input).getTime()
+    //date string
+    responseObject['unix'] = new Date(input).getTime()
+    responseObject['utc'] = new Date(input).toUTCString()
+  }else{
+    //timestamp
+    input = parseInt(input)
+
+    //verfiy it as a unix timestamp
+    responseObject['unix'] = new Date(input).getTime()
+    responseObject['utc']  = new Date(input).toUTCString()
+  }
+
+  if(!responseObject['unix'] || !responseObject['utc']){
+    responseObject.json({error: "Inlavid Date"})
+  }
+
+  if(!responseObject['unix'] || !responseObject['utc']){
+    responseObject.json({error: 'Invalid Date'})
   }
   res.json(responseObject);
 });
+
+app.get('/api/', (req, res) => {
+  responseObject['unix'] = new Date().getTime()
+  responseObject['utc'] = new Date().toUTCString()
+
+  res.json(responseObject);
+})
 
 
 
