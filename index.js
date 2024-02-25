@@ -33,13 +33,9 @@ app.get("/api/:input", function (req, res) {
     //timestamp
     input = parseInt(input)
 
-    if (!input){
-      res.json("Invalid Date")
-    }else{
-      //verfiy it as a unix timestamp
-      responseObject['unix'] = new Date(input).getTime()
-      responseObject['utc']  = new Date(input).toUTCString()
-    }
+    responseObject['unix'] = new Date(input).getTime()
+    responseObject['utc']  = new Date(input).toUTCString()
+    
   }
   
   if(!responseObject['unix'] || !responseObject['utc']){
