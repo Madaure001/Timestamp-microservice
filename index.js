@@ -23,25 +23,34 @@ app.get("/", function (req, res) {
 let responseObject = {}
 app.get("/api/:date_string", function (req, res) {
   
-  let dateString = new Date(req.params.date_string)
+  let dateString = req.params.date_string
+  let date_string = new Date(dateString)
   //Using an ISO date format
-  if (dateString.includes('-')){
-    //date string
-    responseObject['unix'] = new Date(dateString).getTime()
-    responseObject['utc'] = new Date(dateString).toUTCString()
-  }else{
-    //timestamp
-    dateString = parseInt(dateString)
-
-    responseObject['unix'] = new Date(dateString).getTime()
-    responseObject['utc']  = new Date(dateString).toUTCString()
-    
-  }
   
-  if(!responseObject['unix'] || !responseObject['utc']){
-    res.json({error: 'Invalid Date'})
+  if (/\d{5,}/.test(dateString)) {
+
+    const dateInt = parseInt(dateString);
+
+    //Date regards numbers as unix timestamps, strings are processed differently
+
+    res.json({ unix: dateInt, utc: new Date(dateInt).toUTCString() });
+
+  } else {
+
+    let dateObject = new Date(dateString);
+
+    if (dateObject.toString() === "Invalid Date") {
+
+      res.json({ error: "Invalid Date" });
+
+    } else {
+
+      res.json({ unix: dateObject.valueOf(), utc: dateObject.toUTCString() });
+
+    }
+
   }
-  res.json(responseObject);
+
 });
 
 app.get('/api/', (req, res) => {
