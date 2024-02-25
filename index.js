@@ -21,20 +21,20 @@ app.get("/", function (req, res) {
 
 // your first API endpoint... 
 let responseObject = {}
-app.get("/api/:input", function (req, res) {
+app.get("/api/:date_string", function (req, res) {
   
-  let input = req.params.input
+  let dateString = req.params.date_string
   //Using an ISO date format
-  if (input.includes('-')){
+  if (dateString.includes('-')){
     //date string
-    responseObject['unix'] = new Date(input).getTime()
-    responseObject['utc'] = new Date(input).toUTCString()
+    responseObject['unix'] = new Date(dateString).getTime()
+    responseObject['utc'] = new Date(dateString).toUTCString()
   }else{
     //timestamp
-    input = parseInt(input)
+    dateString = parseInt(dateString)
 
-    responseObject['unix'] = new Date(input).getTime()
-    responseObject['utc']  = new Date(input).toUTCString()
+    responseObject['unix'] = new Date(dateString).getTime()
+    responseObject['utc']  = new Date(dateString).toUTCString()
     
   }
   
