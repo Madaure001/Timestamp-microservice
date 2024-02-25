@@ -23,7 +23,7 @@ app.get("/", function (req, res) {
 let responseObject = {}
 app.get("/api/:date_string", function (req, res) {
   
-  let dateString = req.params.date_string
+  let dateString = new Date(req.params.date_string)
   //Using an ISO date format
   if (dateString.includes('-')){
     //date string
